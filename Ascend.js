@@ -1,15 +1,18 @@
-module.exports = (function(param) {
+var Ascend = (function() {
 
-	var func = function() {
-		/// your code
-
+	return func = function() {
+		console.log(arguments[0]);
+		if (!this.controller) {
+			this.controller = new Leap.Controller({ enableGestures: true });
+		}
 		return {
-			animate: function() {
+			controller: this.controller,
+			swipe: function() {
 				// do the animation
 				return this;
-			}
+			},
+
 		}
 	}
 
-	return func;
 })();
