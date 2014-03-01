@@ -65,6 +65,15 @@ var Ascend = (function() {
 			this.controller.on('deviceDisconnected', function(){
 				trigger('deviceDisconnected');
 			});
+			this.controller.on('focus', function(){
+			 	console.log("i'm in focus")
+				trigger('focus');
+			});
+
+			this.controller.on('blur', function(){
+			 	console.log("i'm out of focus")
+				trigger('blur');
+			});
 
 			//Finally Connect
 			this.controller.connect();
