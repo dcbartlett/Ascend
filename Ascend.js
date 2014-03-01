@@ -41,6 +41,11 @@ var Ascend = (function() {
 				}
 			});
 
+			//Lets monitor the default things for LeapJS
+			this.controller.on('connect', function(){
+				this.trigger('connect');
+			})
+
 			this.controller.connect();
 		}
 
