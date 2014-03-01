@@ -133,7 +133,7 @@ var Ascend = (function() {
 
 		// Create our overlay layer
 		var div = document.createElement("div");
-		div.setAttribute("style","width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0.6); overflow: hidden; position: absolute; top: 0px; left: 0px; z-index: 9999;");
+		div.setAttribute("style","display: none; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0.6); overflow: hidden; position: absolute; top: 0px; left: 0px; z-index: 9999;");
 		div.innerHTML = "Hello";
 
 		document.body.appendChild(div);
