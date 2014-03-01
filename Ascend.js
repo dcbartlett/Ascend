@@ -40,12 +40,34 @@ var Ascend = (function() {
 					}
 				}
 			});
+			
+			//Lets bind some default functions
+			bind('connect', function() {
+				console.log('Device Connected');
+			})
+			
+			bind('deviceConnected', function() {
+				console.log('Device Connected');
+			})
+
+			bind('deviceDisconnected', function() {
+				console.log('Device Disconnected');
+			})
 
 			//Lets monitor the default things for LeapJS
 			this.controller.on('connect', function(){
 				trigger('connect');
 			})
 
+			this.controller.on('deviceConnected', function(){
+				trigger('deviceConnected');
+			});
+
+			this.controller.on('deviceDisconnected', function(){
+				trigger('deviceDisconnected');
+			});
+
+			//Finally Connect
 			this.controller.connect();
 		}
 
@@ -80,15 +102,11 @@ var Ascend = (function() {
 			return;
 		};
 
-		function trigger(event) {
-			var t = event.type;
+		function trigger(eventType) {
 			var args = Array.prototype.slice.call(arguments, 0);
-			if (this['on'+t]) {
-				this['on'+t].apply(this, args);
-			}
-			if (this._listeners && t in this._listeners) {
-				for(var i=0; i < this._listeners[t].length; i++) {
-					this._listeners[t][i].apply(this, args);
+			if (this._listeners && eventType in this._listeners) {
+				for(var i=0; i < this._listeners[eventType].length; i++) {
+					this._listeners[eventType][i].apply(this, args);
 				}
 			}
 		};
