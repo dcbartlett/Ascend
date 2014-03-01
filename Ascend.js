@@ -53,6 +53,10 @@ var Ascend = (function() {
 				console.log('Device Disconnected');
 			})
 
+			bind('blur', function(){
+
+			})
+
 			//Lets monitor the default things for LeapJS
 			this.controller.on('connect', function(){
 				trigger('connect');
@@ -66,12 +70,10 @@ var Ascend = (function() {
 				trigger('deviceDisconnected');
 			});
 			this.controller.on('focus', function(){
-			 	console.log("i'm in focus")
 				trigger('focus');
 			});
 
 			this.controller.on('blur', function(){
-			 	console.log("i'm out of focus")
 				trigger('blur');
 			});
 
@@ -127,6 +129,22 @@ var Ascend = (function() {
 			}
 			return -1;
 		}
+
+
+		// Create our overlay layer
+		var div = document.createElement("div");
+		div.style.width = "100%";
+		div.style.height = "100%";
+		div.style.overflow = "hidden";
+		div.style.position = "absolute";
+		div.style.top = 0;
+		div.style.left = 0;
+		div.style.z-index = "9999";
+		div.style.background = "rgba(0,0,0,0.6)";
+		div.style.color = "white";
+		div.innerHTML = "Hello";
+
+		document.body.appendChild(div);
 
 		return {
 			controller: this.controller,
