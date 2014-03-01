@@ -54,11 +54,11 @@ var Ascend = (function() {
 			});
 
 			bind('blur', function(){
-				div.setAttribute("style","display: block;"
+				div.setAttribute("style","display: block;");
 			});
 
 			bind('focus', function(){
-				div.setAttribute("style","display: none;"
+				div.setAttribute("style","display: none;");
 			});
 
 			//Lets monitor the default things for LeapJS
