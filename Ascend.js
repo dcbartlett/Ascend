@@ -43,24 +43,28 @@ var Ascend = (function() {
 			//Lets bind some default functions
 			bind('connect', function() {
 				console.log('Device Connected');
-			})
+			});
 			
 			bind('deviceConnected', function() {
 				console.log('Device Connected');
-			})
+			});
 
 			bind('deviceDisconnected', function() {
 				console.log('Device Disconnected');
-			})
+			});
 
 			bind('blur', function(){
+				div.setAttribute("style","display: block;"
+			});
 
-			})
+			bind('focus', function(){
+				div.setAttribute("style","display: none;"
+			});
 
 			//Lets monitor the default things for LeapJS
 			this.controller.on('connect', function(){
 				trigger('connect');
-			})
+			});
 
 			this.controller.on('deviceConnected', function(){
 				trigger('deviceConnected');
