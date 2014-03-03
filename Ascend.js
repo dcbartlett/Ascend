@@ -1,7 +1,17 @@
 var Ascend = (function() {
 
-	return func = function() {
+	return func = function(config) {
+		// Setup the default configs
+		defaults = {
+			overlays: true,
+		}
 
+		// Merge the configs
+		config = deepMerge(defaults,config);
+
+		console.log(config);
+
+		// Setup to leap loop and check for gestures.
 		if (!this.controller) {
 			this.controller = new Leap.Controller({ enableGestures: true });
 			this.controller.on('animationFrame', function(frame){
@@ -53,12 +63,12 @@ var Ascend = (function() {
 				console.log('Device Disconnected');
 			});
 
-			bind('blur', function(){
-				div.setAttribute("style","display: block;");
+			bind('focus', function(){
+				overLayDiv.style.display = 'none';
 			});
 
-			bind('focus', function(){
-				div.setAttribute("style","display: none;");
+			bind('blur', function(){
+				overLayDiv.style.display = 'block';
 			});
 
 			//Lets monitor the default things for LeapJS
@@ -134,13 +144,28 @@ var Ascend = (function() {
 			return -1;
 		}
 
+		function deepMerge(obj1, obj2) {
+			for (var p in obj2) {
+				try {
+					if ( obj2[p].constructor==Object ) {
+						obj1[p] = MergeRecursive(obj1[p], obj2[p]);
+					} else {
+						obj1[p] = obj2[p];
+					}
+				} catch(e) {
+					obj1[p] = obj2[p];
+				}
+			}
+			return obj1;
+		}
+
 
 		// Create our overlay layer
-		var div = document.createElement("div");
-		div.setAttribute("style","display: none; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0.6); overflow: hidden; position: absolute; top: 0px; left: 0px; z-index: 9999;");
-		div.innerHTML = "Hello";
+		var overLayDiv = document.createElement("div");
+		overLayDiv.setAttribute("style","display: none; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0.6); overflow: hidden; position: fixed; top: 0px; left: 0px; z-index: 9999;");
+		overLayDiv.innerHTML = "Hello";
 
-		document.body.appendChild(div);
+		document.body.appendChild(overLayDiv);
 
 		return {
 			controller: this.controller,
