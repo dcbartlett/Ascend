@@ -1,6 +1,8 @@
 var Ascend = (function() {
 
 	return func = function(config) {
+		var ascend = this;
+
 		// Setup the default configs
 		defaults = {
 			overlays: true,
@@ -9,7 +11,7 @@ var Ascend = (function() {
 		// Merge the configs
 		config = deepMerge(defaults,config);
 
-		console.log(config);
+		// console.log(config);
 
 		// Setup to leap loop and check for gestures.
 		if (!this.controller) {
@@ -17,34 +19,31 @@ var Ascend = (function() {
 			this.controller.on('animationFrame', function(frame){
 				if (frame.id%10 === 0) {
 					if (frame.pointables.length) {
-						// $(options.element).trigger('pointables', frame);
+						// trigger('pointables', frame);
 					} else {
-						// $(options.element).trigger('pointablesout', frame);
+						// trigger('pointablesout', frame);
 					}
 					if (frame.hands.length) {
-						// $(options.element).trigger('hands', frame);
+						// trigger('hands', frame);
 					} else {
-						// $(options.element).trigger('handsout', frame);
+						// trigger('handsout', frame);
 					}
 					if (frame.fingers.length) {
-						// $(options.element).trigger('fingers', frame);
+						// trigger('fingers', frame);
 					} else {
-						// $(options.element).trigger('fingersout', frame);
+						// trigger('fingersout', frame);
 					}
 					if (frame.tools.length) {
 						console.log('Tool '+frame.tools[0].id+' Detected');
-						// $(options.element).trigger('tools', frame);
+						// trigger('tools', frame);
 					} else {
-						// $(options.element).trigger('toolsout', frame);
+						// trigger('toolsout', frame);
 					}
 					if (frame.gestures.length > 0) {
-						// $(options.element).trigger('gesture', frame);
+						trigger('gesture', frame);
 						frame.gestures.forEach(function(gesture) {
-							// $(options.element).trigger(gesture.type, gesture);
-							// $(options.element).trigger(
-							// 	gesture.type + gesture.state,
-							// 	gesture
-							// );
+							trigger(gesture.type, gesture);
+							trigger(gesture.type + gesture.state,gesture);
 						});
 					}
 				}
@@ -109,6 +108,11 @@ var Ascend = (function() {
 			return;
 		};
 
+		function showBindings() {
+			return this._listeners ? this._listeners : null;
+		};
+
+
 		function unbind(eventType, listener) {
 			if(!(this._listeners && (eventType in this._listeners))) {
 				return;
@@ -168,16 +172,11 @@ var Ascend = (function() {
 		document.body.appendChild(overLayDiv);
 
 		return {
-			controller: this.controller,
-			bind: bind,
-			unbind: unbind,
-			trigger: trigger,
-			swipe: function(callback) {
-
-			},
-			punch: function() {
-
-			}
+			controller: ascend.controller,
+			bind: function(eventType, listener){ return bind.call(ascend, eventType, listener); },
+			unbind: function(eventType, listener){ return unbind.call(ascend); },
+			listbindings: function(){return showBindings.call(ascend)},
+			trigger: function(eventType){ return trigger.call(ascend, eventType); }
 		};
 	}
 
