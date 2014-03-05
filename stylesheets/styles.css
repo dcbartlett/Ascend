@@ -766,7 +766,9 @@ dt {
   font-size: 32px;
   font-style: italic;
   float: left;
-  margin-left: 60px;
+}
+#header nav li.logo img {
+  height: 50px;
 }
 #header nav li.downloads {
   float: right;
