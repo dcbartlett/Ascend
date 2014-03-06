@@ -11,7 +11,15 @@ var Ascend = (function() {
 		// Merge the configs
 		config = deepMerge(defaults,config);
 
-		// console.log(config);
+		// Setup Overlays 
+		if (config.overlays == true) {
+			var overLayDiv = document.createElement('div');
+			overLayDiv.setAttribute('style','display: block; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0); overflow: hidden; position: fixed; top: 0px; left: 0px; z-index: 9999;');
+			var overLayDevice = document.createElement('img');
+			overLayDevice.setAttribute('src','/images/leapDeviceOn.gif');
+			overLayDevice.setAttribute('style','width: 50px;position: fixed; bottom: 0px; right: 0px;');
+			document.body.appendChild(overLayDiv).appendChild(overLayDevice);
+		}
 
 		// Setup to leap loop and check for gestures.
 		if (!this.controller) {
@@ -50,26 +58,29 @@ var Ascend = (function() {
 			});
 			
 			//Lets bind some default functions
-			bind('connect', function() {
-				console.log('Device Connected');
-			});
-			
 			bind('deviceConnected', function() {
+				if (config.overlays == true) trigger('showDeviceConnected');
 				console.log('Device Connected');
 			});
 
 			bind('deviceDisconnected', function() {
-				if (config.overlays == true) {
-					overLayDevice.setAttribute('src','/images/leapDeviceOn.gif');
-				}
+				if (config.overlays == true) trigger('showDeviceDisconnected');
 				console.log('Device Disconnected');
 			});
 
-			//Lets monitor the default things for LeapJS
-			this.controller.on('connect', function(){
-				trigger('connect');
+			bind('showDeviceConnected', function() {
+				if (config.overlays == true) {
+					overLayDevice.setAttribute('src','/images/leapDeviceOn.gif');
+				}
 			});
 
+			bind('showDeviceDisconnected', function() {
+				if (config.overlays == true) {
+					overLayDevice.setAttribute('src','/images/leapDeviceOff.gif');
+				}
+			});
+
+			//Lets monitor the default things for LeapJS
 			this.controller.on('deviceConnected', function(){
 				trigger('deviceConnected');
 			});
@@ -87,7 +98,20 @@ var Ascend = (function() {
 
 			//Finally Connect
 			this.controller.connect();
+			checkStatus(this.controller);
 		}
+
+		function checkStatus(controller) {
+			whileBool(controller.connection.focusedState,function() {
+				trigger('showDeviceDisconnected');
+			})
+			trigger('showDeviceConnected');
+			// if (controller.connection.focusedState) {
+			// 	trigger('deviceConnected');
+			// } else {
+			// 	trigger('deviceDisconnected');
+			// }
+		};
 
 		function bind(eventType, listener) {
 			if(!this._listeners) {
@@ -134,6 +158,7 @@ var Ascend = (function() {
 			}
 		};
 
+		//Utils
 		function arrIndexOf(arr, obj) {
 			for(var i=0; i < arr.length; i++){
 				if(arr[i] === obj){
@@ -158,13 +183,9 @@ var Ascend = (function() {
 			return obj1;
 		}
 
-		if (config.overlays == true) {
-			var overLayDiv = document.createElement('div');
-			overLayDiv.setAttribute('style','display: block; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0); overflow: hidden; position: fixed; top: 0px; left: 0px; z-index: 9999;');
-			var overLayDevice = document.createElement('img');
-			overLayDevice.setAttribute('src','/images/leapDeviceOn.gif');
-			overLayDevice.setAttribute('style','width: 50px');
-			document.body.appendChild(overLayDiv).appendChild(overLayDevice);
+		function whileBool(object, callback) {
+			if (!object) setTimeout(function() {whileBool(object, callback)},1000);
+			else return callback && callback();
 		}
 
 		return {
