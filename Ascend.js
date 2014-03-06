@@ -59,15 +59,10 @@ var Ascend = (function() {
 			});
 
 			bind('deviceDisconnected', function() {
+				if (config.overlays == true) {
+					overLayDevice.setAttribute('src','/images/leapDeviceOn.gif');
+				}
 				console.log('Device Disconnected');
-			});
-
-			bind('focus', function(){
-				overLayDiv.style.display = 'none';
-			});
-
-			bind('blur', function(){
-				overLayDiv.style.display = 'block';
 			});
 
 			//Lets monitor the default things for LeapJS
@@ -163,13 +158,14 @@ var Ascend = (function() {
 			return obj1;
 		}
 
-
-		// Create our overlay layer
-		var overLayDiv = document.createElement("div");
-		overLayDiv.setAttribute("style","display: none; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0.6); overflow: hidden; position: fixed; top: 0px; left: 0px; z-index: 9999;");
-		overLayDiv.innerHTML = "Hello";
-
-		document.body.appendChild(overLayDiv);
+		if (config.overlays == true) {
+			var overLayDiv = document.createElement('div');
+			overLayDiv.setAttribute('style','display: block; width: 100%; height: 100%; color: white; background-color: rgba(0,0,0,0); overflow: hidden; position: fixed; top: 0px; left: 0px; z-index: 9999;');
+			var overLayDevice = document.createElement('img');
+			overLayDevice.setAttribute('src','/images/leapDeviceOn.gif');
+			overLayDevice.setAttribute('style','width: 50px');
+			document.body.appendChild(overLayDiv).appendChild(overLayDevice);
+		}
 
 		return {
 			controller: ascend.controller,
