@@ -607,7 +607,7 @@ strong {
 }
 
 .wrapper {
-  max-width: 650px;
+  max-width: 1000px;
   margin: 0 auto;
   position: relative;
   padding: 0 20px;
@@ -708,7 +708,7 @@ dt {
   border-bottom: 7px solid #84bcc4;
 }
 #header nav {
-  max-width: 650px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 0 10px;
   background: blue;
@@ -768,11 +768,16 @@ dt {
   font-size: 38px;
 }
 
-section {
-  max-width: 650px;
-  padding: 0px 0px 50px 0px;
-  margin: 20px 0;
+section.first {
+  max-width: 1000px;
+  padding: 0px 0px 0px 0px;
+  margin: 20px 0px;
   margin-top: 85px;
+}
+section {
+  max-width: 1000px;
+  padding: 0px 0px 0px 0px;
+  margin: 20px 0px;
 }
 section #title {
   border: 0;
